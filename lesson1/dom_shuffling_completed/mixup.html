@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Mixup Fixer</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <main>
+      <h1><a href="#">My Site!</a></h1>
+      <section id="content">
+        <article>
+          <header>
+            <h1>Welcome to my site!</h1>
+            <h2>I hope you stay a while.</h2>
+          </header>
+          <p>
+            This is my personal slice of the Internet, where I post my ideas and
+            projects that I've completed or am currently working on. All are
+            patent pending.
+          </p>
+        </article>
+        <figure>
+          <img src="images/baby_mop.jpg" alt="The baby mop" />
+          <figcaption>
+            The chin stick &ndash; stay upright while sleeping!
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="images/chin_stick.jpg" alt="The chin stick" />
+          <figcaption>
+            The baby mop &ndash; great for wet and dry mopping!
+          </figcaption>
+        </figure>
+      </section>
+    </main>
+
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <footer>
+      <p>&copy; 2020 me. All projects are patent pending</p>
+    </footer>
+    <script>
+      let section = document.getElementById('content');
+      let figures = document.getElementsByTagName('figure');
+      section.insertBefore(figures[1], figures[0]);
+
+
+      let heading = document.querySelector('main h1');
+      let header = document.querySelector('header');
+      header.insertAdjacentElement("afterbegin", heading);
+
+      let body = document.body;
+      body.insertAdjacentElement('afterbegin', header);
+
+      let headers = document.querySelectorAll('header');
+      let newLocation = document.querySelector('main section article');
+      newLocation.insertAdjacentElement('afterbegin', headers[1]);
+
+      let movers = Array.prototype.slice.call(headers[0].children, 1);
+      movers.forEach(header => {
+        headers[1].appendChild(header);
+      });
+
+      let currentNavPosition = document.querySelector('main section article header nav');
+      headers[0].insertAdjacentElement('beforeend', currentNavPosition);
+
+      let captions = document.querySelectorAll('figcaption');
+      let figcaption1 = captions[0];
+      let figcaption2 = captions[1];
+      figcaption1.classList.add('baby-mop');
+      figcaption2.classList.add('chin-stick');
+      let babyMopParent = figcaption1.parentNode;
+      let chinStickParent = figcaption2.parentNode;
+      babyMopParent.insertAdjacentElement('beforeend', figcaption2);
+      chinStickParent.insertAdjacentElement('beforeend', figcaption1);
+
+      let mainFigures = document.querySelectorAll('main section figure');
+      let mainFigArr = Array.prototype.slice.call(mainFigures);
+      let targetParent = document.querySelector('main section article')
+      mainFigArr.forEach(fig => {
+        targetParent.appendChild(fig);
+        }
+      );
+    </script>
+  </body>
+</html>
