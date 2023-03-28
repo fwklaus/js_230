@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>your page title goes here</title>
+  <meta charset="utf-8" />
+</head>
+<body>
+  <h1>Example</h1>
+  <script>
+    let request = new XMLHttpRequest();
+    request.open('GET', 'htps://api.github.com/repos/rails/rails');
+
+    request.addEventListener('load', event => {
+      let data = JSON.parse(request.response);
+      console.log(request.status);
+      console.log(data.open_issues);
+    });
+
+    request.addEventListener('error', event => {
+      console.log('The request could not be completed!');
+    });
+
+    request.send();
+  </script>
+</body>
+</html>

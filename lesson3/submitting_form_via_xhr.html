@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>your page title goes here</title>
+  <meta charset="utf-8" />
+</head>
+<body>
+  <form id="form">
+    <p><label>Title: <input type="text" name="title"></label></p>
+    <p><label>Author: <input type="text" name="author"></label></p>
+    <p><button type="submit">Submit</button></p>
+  </form>
+
+  <script>
+    let form = document.getElementById('form');
+
+    // Bind to the form's submit event to handle the submit button
+    // being called, enter being pressed within an input, etc.
+    form.addEventListener('submit', event => {
+        // prevent the browser from submitting the form
+        event.preventDefault();
+
+        // access the inputs using form.elements and serialize into a string
+        // let keysAndValues = [];
+
+        // for (let index = 0; index < form.elements.length; index += 1) {
+        //   let element = form.element[index];
+        //   let key;
+        //   let value;
+
+        //   if (element.type !== 'submit') {
+        //     key = encodeURIComponent(element.name);
+        //     value = encodeURIComponent(element.value);
+        //     keysAndValues.push(`${key}=${value}`);
+        //   }
+        // }
+
+        // let data = keysAndValues.join('&');
+
+        // FormData makes it easy to serialize the form's data
+        // only uses input fields that have a name attribute 
+        let data = new FormData(form);
+
+        // submit the data
+        let request = new XMLHttpRequest();
+        request.open('POST', 'https://lsjs230-book-catalog.herokuapp.com.books');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        request.addEventListener('load', () => {
+          if (request.status === 201) {
+            console.log(`This book was added to the catalog: ${request.responseText}`);
+          }
+        });
+
+        request.send(data);
+    });
+
+  </script>
+</body>
+</html>
