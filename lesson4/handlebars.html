@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>jQuery Selectors</title>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+    <script src="jquery_practice/jquery.js"></script>
+  </head>
+
+  <body>
+    <main>
+    <ul>
+    </ul>
+
+    <script id='productTemplate' type='text/x-handlebars'>
+      <li>
+        <h3>{{name}}</h3>
+        <dl>
+          <dt>Quantity:</dt>
+          <dd>{{quantity}}</dd>
+          <dt>Price:</dt>
+          <dd>
+            ${{price}}
+            {{#if on_sale}}
+            <strong>SALE!</strong>
+            {{/if}}
+          </dd>
+        </dl>
+      </li>
+    </script>
+
+    <script id="productsList" type="text/x-handlebars">
+      {{#each items}}
+      {{> productTemplate}}
+      {{/each}}
+    </script>
+
+    <script>
+      let products = [{
+        name: 'Banana',
+        quantity: 14,
+        price: 0.79
+      }, {
+        name: 'Apple',
+        quantity: 3,
+        price: 0.55
+      }];
+      let productsList = Handlebars.compile($('#productsList').html());
+      let productTemplate = Handlebars.compile($('#productTemplate').html());
+      let $list = $('ul');
+
+      Handlebars.registerPartial('productTemplate', $('#productTemplate').html());
+  
+      $list.html(productTemplate({ items: products }));
+
+      let newProduct = {
+        name: 'Soup',
+        quantity: 1,
+        price: 1.29
+      };
+
+      $list.append(productTemplate(newProduct));
+    </script>
+    </main>
+  </body>
+</html>

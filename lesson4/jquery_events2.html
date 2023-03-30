@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>your page title goes here</title>
+  <meta charset="utf-8" />
+  <script src="jquery_practice/jquery.js"></script>
+  <style>
+    body {
+      background-color: rgb(133, 41, 41);
+    }
+
+    div {
+      background-color: white;
+    }
+
+    div.main {
+      padding: 5px 20px;
+    }
+
+    h1 {
+      color: turquoise;
+      margin: 15px;
+    }
+
+    form {
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class='main'>
+    <h1>Type a key to toggle the accordion with</h1>
+
+    <form action="" method="get">
+      <input type="text" maxlength="1" size='4'/>
+      <input type="submit" value="Set"/>
+    </form>
+    
+    <a href='#'>Toggle Accordion</a>
+    <div id="accordion">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus non enim praesent elementum. Fringilla est ullamcorper eget nulla. Vitae elementum curabitur vitae nunc sed velit dignissim. Aliquet eget sit amet tellus cras adipiscing enim. Vitae tortor condimentum lacinia quis vel eros donec ac odio. Hendrerit gravida rutrum quisque non tellus orci ac auctor. Placerat vestibulum lectus mauris ultrices eros in. Eu volutpat odio facilisis mauris sit. Et leo duis ut diam quam.
+      </p>
+    </div>
+  </div>
+  
+  <script>
+    $(function() {    
+      $('form').on('submit', function(event) {
+        event.preventDefault()
+        let inputChar = $("input[type='text']").val().toUpperCase();
+        $(document).off('keypress').on('keypress', function(e) {
+          if(e.key.toUpperCase() !== inputChar) {
+            return;
+          }
+
+          $('a').trigger('click');
+        });
+        
+        $('a').on('click', function(event) {
+          event.preventDefault();
+          $('#accordion').slideToggle();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
