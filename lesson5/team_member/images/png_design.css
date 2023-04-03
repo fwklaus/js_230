@@ -1,0 +1,104 @@
+@import url("modified_css_reset.css");
+
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+  box-sizing: border-box;
+  color: #193441;
+}
+
+body {
+  background-image: linear-gradient(to bottom, #d2dcbe, #fcfff5);
+  background-repeat: no-repeat;
+}
+
+header {
+  width: 960px;
+  margin: 10px auto 0 auto;
+  display: block;
+  overflow: hidden;
+  padding: 15px;
+}
+
+header h1 {
+  position: relative;
+  font-size: 36px;
+  font-weight: normal;
+  float: left;
+  position: relative;
+  top: 45px;
+  left: 15px;
+} 
+
+h2 {
+  font-weight: normal;
+  font-size: 32px;
+  color: #193441;
+  position: relative;
+  margin: 14px 30px 20px 30px;
+}
+
+header img {
+  float: left;
+}
+
+nav {
+  float: right;
+  position: relative;
+  top: 75px;
+
+}
+
+nav li {
+  display: inline-block;
+  background-color: #fcfff5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+nav li a {
+  font-size: 18px;
+  display: block;
+  text-decoration: none;
+  color: #aabdb1;
+  padding: 13px 43px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+nav li a.active {
+  color: #fcfff5;
+  background-color: #91aa9d;
+}
+
+main {
+  background-color:#ffffff;
+  width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+  filter: drop-shadow(0px 5px 2.5px #b5b5b5);
+}
+
+main img {
+  margin: 30px;
+}
+
+p {
+  color: #193441;
+  size: 20px;
+  margin: 15px 30px 15px 30px;
+}
+
+figure img {
+  float: right;
+}
+
+footer {
+  width: 960px;
+  margin: 0 auto;
+}
+
+footer p {
+  color: #3e606f;
+  font-size: 14px;;
+  margin: 15px 0 40px 0;
+}

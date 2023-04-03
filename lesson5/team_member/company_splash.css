@@ -1,0 +1,65 @@
+@import url("modified_css_reset.css");
+
+* {
+  font-family: 'Nunito Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 75px 0 0 0;
+  font: normal 20px Helvetica, Arial, sans-serif; 
+  color: black;
+  background: #2f2840 url("images/bg_body.gif");
+  padding-bottom: 50px;
+}
+
+header, main, footer {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+main {
+  background: #ffffff;
+  padding: 75px 0 0 0;
+  text-align: center;
+}
+
+article {
+  padding: 0 110px 100px 110px;
+}
+
+p {
+  line-height: 28px;;
+  padding: 22px 0 0;
+}
+
+h1 {
+  padding: 0 0 50px 0;
+  text-align: center;
+}
+
+h2{
+  font-size: 36px;
+}
+
+h3 {
+  font-size: 24px;
+  color: #3e98b2;
+  margin: 20px;
+}
+
+footer {
+  padding: 30px 0;
+  height: 120px;
+  background-color: #e7e7e7;
+}
+
+footer ul {
+  margin: 0;
+  text-align: center;
+}
+
+li {
+  display: inline;
+  padding: 0 62px;
+}

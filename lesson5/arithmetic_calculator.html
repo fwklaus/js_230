@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>your page title goes here</title>
+  <meta charset="utf-8" />
+  <script src="javascripts/jquery.js"></script>
+  <style>
+    body {
+      background-color: maroon;
+    }
+
+    form {
+      background-color: white;
+      height: 200px;
+      width: 400px;
+    }
+
+    form fieldset {
+      padding-top: 30px;
+      border: none;
+    }
+
+    form fieldset label {
+      color: turquoise;
+      font-size: 36px;
+      padding-left: 30px;
+    }
+
+    #equation {
+      padding-top: 30px;;
+      margin-left: 30px;
+    }
+  </style>
+</head>
+<body>
+  <form class='operation' action="#">
+    <fieldset>
+      <label id="sum "for="sum">0</label>
+    </fieldset>
+
+    <div id="equation">
+      <input id="first" name ="first" type="text" size="4">
+      <select id= "operation" name="operation" id="select_operation">
+        <option value="plus">+</option>
+        <option value="minus">-</option>
+        <option value="mult">*</option>
+        <option value="divide">/</option>
+      </select>
+      <input id="second" name="second" type="text" size="4">
+      <input id = "submit" type="submit" value="=">
+    <div>
+  </form>
+
+  <script>
+    let submit = document.querySelector('#submit');
+
+    document.addEventListener('DOMContentLoaded', function() {    
+      let label = document.querySelector('label');
+
+      submit.addEventListener('click', function(event) {
+        label.textContent = '0'
+        let firstNum = document.querySelector('#first').value;
+        let secondNum = document.querySelector('#second').value;
+        let operation = document.querySelector('#operation').value;
+        let result;
+
+        event.preventDefault();
+        switch(operation) {
+          case('plus'):
+            result = Number(firstNum) + Number(secondNum);
+            break;
+          case('minus'):
+            result = Number(firstNum) - Number(secondNum);
+            break;
+          case('mult'):
+            result = Number(firstNum) * Number(secondNum);
+            break;
+          case('divide'):
+            result = Number(firstNum) / Number(secondNum);
+            break;
+        }
+
+        label.textContent = result;
+      });
+    });
+  </script>
+</body>
+</html>

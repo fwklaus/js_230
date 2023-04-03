@@ -1,0 +1,44 @@
+    body {
+      background-color: rgb(66, 211, 163);
+      color: rgb(66, 211, 163);
+    }
+
+    main {
+      background-color: white;
+      width: 300px;
+      height: 600px;
+      position: relative;
+      top: 25%;
+      left: 25%;
+    }
+
+    fieldset {
+      border: none;
+      margin-top: 20px;
+      padding: 10px;
+    }
+
+    fieldset label {
+      display: block;
+    }
+
+    #main_label {
+      font-size: 25px;
+      padding-bottom: 10px;;
+    }
+
+    h1 {
+      color: rgb(185, 43, 43);
+      text-align: center;
+    }
+
+    #submit_item {
+      margin-top: 20px;
+      display: block;
+      width: 200px;
+      height: 40px;
+      color: white;
+      background: linear-gradient(0deg, rgb(172, 17, 17), rgb(238, 119, 119));
+      border-radius: 12px;
+      border-color: rgb(134, 51, 51);
+    }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>your page title goes here</title>
+  <meta charset="utf-8" />
+  <script src="javascripts/jquery.js"></script>
+</head>
+<body>
+  <ul>
+    <li><a href="#" data-block="gold">Gold Sponsors</a></li>
+    <li><a href="#" data-block="silver">Silver Sponsors</a></li>
+    <li><a href="#" data-block="bronze">Bronze Sponsors</a></li>
+  </ul>
+
+  <form action="#">
+    <input type="text">
+    <input id='submit' type="button" value="Submit">
+  </form>
+  
+  <article data-block="gold">
+    <h1>Gold Sponsors</h1>
+  </article>
+  
+  <article data-block="silver">
+    <h1>Silver Sponsors</h1>
+  </article>
+  
+  <article data-block="bronze">
+    <h1>Bronze Sponsors</h1>
+  </article>
+
+  <div id="gold" data-block="gold">
+    <h1>Gold Sponsors</h1>
+  </div>
+
+  <script>
+    // var $a = $('a[data-block=gold]');
+
+    // console.log($a.attr('data-block')); // gold
+    // console.log($a.data('block'));  //gold
+
+    // $a.data('block', 'silver');
+
+    // console.log($a.attr('data-block')); // gold
+    // console.log($a.data('block'));  // silver
+
+    $('#submit').click(function(event) {
+      let $value = $('input').first().val();
+      let $heading = $('h1').first();
+      console.log($heading.text($value));
+    });
+
+    $('a').on('click', function(e) {
+      e.preventDefault();
+
+      $('article').hide().filter('[data-block=' + $(this).attr('data-block') + ']').show();
+    });
+
+    var gold = document.getElementById('gold');
+    console.log(gold.dataset);
+    gold.dataset.block = 'silver';
+
+    gold.dataset.sponsor = 'Newman\'s Own';
+    delete gold.dataset.block;
+
+  </script>
+</body>
+</html>

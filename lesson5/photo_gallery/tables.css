@@ -1,0 +1,28 @@
+/* table {
+  background-color: cyan;
+  border-collapse: collapse;
+}
+
+.odd-row {
+  background-color: orange;
+}
+
+.even-row {
+  background-color: yellow;
+} */
+
+/* th[scope="col"] {
+  color: green;
+}
+
+th[scope="row"] {
+  color: blue;
+} */
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid grey;
+}

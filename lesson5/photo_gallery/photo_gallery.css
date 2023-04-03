@@ -1,0 +1,59 @@
+body, main, figure, figcaption, img {
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-align: center;
+}
+
+body, main {
+    min-width: 600px;
+    max-width: 1000px;
+    padding: 20px;
+    margin: 0 auto;
+    background: #333333;
+}
+
+.thumbnails {
+  display: inline-flex;
+}
+
+.thumbnails figure {
+  margin: 10px;
+  border: solid white 5px;
+}
+
+.thumbnails figure img {
+  display: block;
+  width: 100%;
+}
+
+#display {
+  width: 500px;
+  height: 600px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#display figcaption {
+  text-align: left;
+}
+
+.thumbnails figure.active {
+  border-color: blue;
+}
+
+#display {
+  border: solid white 10px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+#display img {
+  display: block;
+  width: 100%;
+}
+
+p.caption {
+  size: 20px;
+  text-align: left;
+}

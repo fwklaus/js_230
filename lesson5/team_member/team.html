@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Space Design | Team</title>
+  <meta charset="utf-8" />
+  <link rel= "stylesheet" href="space_design.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+  <script src="../javascripts/jquery.js"></script>
+</head>
+<body>
+  <header>
+    <h1><img src="images/logo2.png" alt="Space Design"></h1>
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a class="active" href="team.html">Team</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="team">
+    <article>
+      <h2>Team</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do   eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniadolor.
+      </p>
+
+      <ul class="team">
+        <li>
+          <a href="#"><img src="images/img_kevin.jpg" alt="Kevin"><br>Kevin</a>
+        </li>
+        
+        <li>
+          <a href="#"><img src="images/img_louis.jpg" alt="Louis"><br>Louis</a>
+        </li>
+        
+        <li>
+          <a href="#"><img src="images/img_kasper.jpg" alt="Kasper"><br>Kasper</a>
+        </li>
+        
+        <li>
+          <a href="#"><img src="images/img_chris.jpg" alt="Chris"><br>Chris</a>
+        </li>
+      </ul>
+    </article>
+
+    <div id="overlay" hidden></div>
+    <div id="modal" hidden></div>
+  </main>
+
+  <footer>
+    <p>
+      Lorem ipsum dolor sit amet, consectetu
+      incididunt ut labore et dolore magna aliqua. Ut enim ad 
+    </p>
+
+    <ul>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Email</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    function setOverlay(overlay) {
+      overlay.hidden = false;
+    }
+
+    function getName(name) {
+      let fullName = ( function(nm){
+        let obj = { 
+          "Kevin": "Kevin Wang",
+          "Louis": "Louis Burton",
+          "Kasper": "Kasper Salto",
+          "Chris": "Chris Lee",
+        };
+        return obj[nm];
+      })(name);
+
+      return `<h1>${fullName}</h1>`;
+    }
+
+    function displayModal(modal, event) {
+      let imgCopy = event.target.cloneNode();
+
+      imgCopy.classList.add('copy');
+      modal.prepend('<a href="#" class="close">Close</a>')
+      modal.prepend('<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>');
+      modal.prepend(getName(event.target.alt));
+      modal.prepend(imgCopy);
+
+
+      modal.fadeIn(400, function() {
+        modal.get()[0].hidden = false;
+      });
+    }
+
+    function hideModal(modal) {
+      modal.fadeOut(400, function() {
+        modal.empty();
+        modal.get()[0].setAttribute('style', '');
+        modal.get()[0].hidden = true;
+      });
+    }
+
+    function removeOverlay(overlay) {
+      overlay.hidden = true;
+    }
+
+    $(function() {
+      $('ul.team li a').on('click', function(event) {
+        let modal = $('#modal');
+        let overlay = $('#overlay').get()[0];
+
+        event.preventDefault();
+        setOverlay(overlay);
+        displayModal(modal, event);
+
+        $(".close").on('click', function(e) {
+          e.preventDefault();
+          removeOverlay(overlay);
+          hideModal(modal);
+        });
+      });
+    });
+
+  </script>
+</body>
+</html>
