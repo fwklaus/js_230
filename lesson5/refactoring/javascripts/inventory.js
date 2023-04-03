@@ -1,4 +1,5 @@
 var inventory;
+// Refactor from jQuery to vanilla JS
 
 (function() {
   inventory = {
