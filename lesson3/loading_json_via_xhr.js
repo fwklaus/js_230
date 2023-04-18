@@ -1,5 +1,5 @@
 //Modern browsers provide native support for fetching JSON data
-// we use the responseType property to tell the brpwser how to handle data it receives
+// we use the responseType property to tell the browser how to handle data it receives
 
 let request = new XMLHttpRequest();
 request.open('GET', 'https://api.github.com/repos/rails/rails');
