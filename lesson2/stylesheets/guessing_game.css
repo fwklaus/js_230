@@ -50,4 +50,22 @@ input[type="submit"] {
   background: linear-gradient(to bottom, #CC183E 0%, #780E24 100%);
 }
 
+input[type="submit"].off {
+  display: block;
+  width: 100%;
+  padding: 15px 0;
+  font: normal 20px Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  text-shadow: 1px 1px 5px rgba(80, 80, 80, .8);
+  border: none;
+  box-shadow: none;
+  border-radius: 11px;
+  background: grey;
+}
+
+
 a { color: #cc183e; }
+
+input[type="submit"]:hover {
+  cursor: pointer;
+}
