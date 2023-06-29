@@ -3,8 +3,6 @@
   <head>
     <title>Inventory Order Form</title>
     <meta charset="UTF-8" />
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <script src="javascripts/inventory.js"></script>
     <link rel="stylesheet" href="stylesheets/form.css" />
   </head>
@@ -89,36 +87,6 @@
           <div class="actions">
             <input type="submit" value="Order inventory" />
           </div> -->
-
-        <script id="template" type="text/x-handlebars"">
-          <td>
-            <input type="hidden" name="item_id_{{id}}" value="{{id}}" />
-            <label for="item_name_{{id}}">Name<label>
-
-            <input name="item_name_{{id}}" type="text" />
-          </td>
-          
-          <td>                
-            <label for="item_stock_number_{{id}}">Stock Number</label>
-            
-            <input name="item_stock_number_{{id}}" type="text" maxlength="8" />
-          </td>
-          
-          <td>
-            <label for="item_quantity_{{id}}">Quantity</label>
-            
-            <input name="item_quantity_{{id}}" type="number" value="1" />
-          </td>
-          
-          <td>
-            <a href="#" class="delete">Delete</a>
-          </td>
-        </script>
-
-        <script>
-          let template = document.querySelector('#template');
-          template = Handlebars.compile(template.textContent);
-        </script>
         </fieldset>
       </form>
     </main>

@@ -209,15 +209,5 @@
         </article>
       </li>
     </script>
-    <script>
-      let templates = {};
-      document.querySelectorAll('script[type="text/x-handlebars"]').forEach(script => {
-        templates[script.id] = Handlebars.compile(script.innerHTML);
-      });
-
-      document.querySelectorAll('script[data-type="partial"]').forEach(script => {
-        Handlebars.registerPartial('photo_comment', script.innerHTML);
-      });
-    </script>
   </body>
 </html>

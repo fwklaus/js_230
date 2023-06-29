@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>your page title goes here</title>
+  <meta charset="utf-8" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    article + article {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li><a href="#" data-block="gold">Gold Sponsors</a></li>
+    <li><a href="#" data-block="silver">Silver Sponsors</a></li>
+    <li><a href="#" data-block="bronze">Bronze Sponsors</a></li>
+  </ul>
+  
+  <article data-block="gold">
+    <h1>Gold Sponsors</h1>
+  </article>
+  
+  <article data-block="silver">
+    <h1>Silver Sponsors</h1>
+  </article>
+  
+  <article data-block="bronze">
+    <h1>Bronze Sponsors</h1>
+  </article>
+
+  <script>
+    $(function() {
+      let $links = $('a');
+
+      $links.on("click", e => {
+        e.preventDefault();
+        let $type = $(e.target).data("block")
+
+        $('article').not($(`article[data-block="${$type}"]`)).hide();
+        $(`article[data-block="${$type}"]`).show();
+      });
+    })
+  </script>
+</body>
+</html>

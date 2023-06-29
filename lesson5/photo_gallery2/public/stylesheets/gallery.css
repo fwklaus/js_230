@@ -187,16 +187,36 @@ textarea {
   border-radius: 4px;
 }
 
-#slides figure + figure {
-  opacity: 0;
+@keyframes fade-out {
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
 }
 
-#slides .hide {
-  opacity: 0;
-  transition: opacity 800ms;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-#slides .show {
-  opacity: 1;
-  transition: opacity 800ms;
+.fade-out {
+  animation: fade-out 2000ms;
+}
+
+.fade-in {
+  animation: fade-in 2000ms;
+}
+
+a.next:hover, a.prev:hover {
+  cursor: pointer;
+}
+
+div.actions {
+  cursor: pointer;
 }

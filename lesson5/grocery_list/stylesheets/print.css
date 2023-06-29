@@ -1,0 +1,12 @@
+body {
+  background: #5bccb3;
+  color: #16997c;
+  font: normal 16px Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 25px 0;
+}
+
+form {
+  display: none;
+}
+

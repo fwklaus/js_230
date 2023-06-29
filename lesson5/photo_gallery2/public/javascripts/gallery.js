@@ -1,190 +1,289 @@
-document.addEventListener("DOMContentLoaded", function() {
-  let slides = document.querySelector('#slides');
-  let header = document.querySelector('section > header');
-  let commentsList = document.querySelector('#comments ul');
-  let next = document.querySelector('.next');
-  let previous = document.querySelector('.prev');
-  let comments = document.querySelector('#comments');
-  let form = document.querySelector('form');
-  let photos;
-  let ids;
-  let currentPhotoId;
+function SlideShow() {
+  this.photoTemplate;
+  this.photoInfoTemplate;
+  this.photoCommentsTemplate;
+  this.registerTemplates();
 
-  let request = new XMLHttpRequest();
-  request.open('GET', '/photos');
-  request.responseType = 'json';
-  request.send();
-
-  function removeInnerHTML(element) {
-    let length = element.childNodes.length;
-    let childNodes = element.childNodes;
-    
-    for (let i = 0; i < length; i++) {
-      childNodes[0].remove();
+  (async function(that) {
+    try {
+      that.photos = await that.getPhotos();
+      that.comments = await that.getComments();
+      that.renderPhotos();
+      that.renderComments();
+      that.bindEvents();
+    } catch (e) {
+      console.log(e);
     }
-  }
+  })(this);
+}
 
-  function reorderSlides(shift="next") {
-    switch(shift) {
-      case("next"):
-      ids.push(ids.shift());
-      break;
-      case("prev"):
-      ids.unshift(ids.pop());
-      break;
-    }
-  }
-
-  function renderPhotos() {
-    photos = ids.map(id => {
-      return photos.find(photo => photo.id === id);
-    })
-
-    return templates.photos({photos: photos});
-  }
-
-  function renderPhotoInformation() {
-    let photo = photos.filter(photo => photo.id === currentPhotoId)[0];
-    return templates.photo_information(photo);
-  }
-
-  function renderPage() {
-    let photoHTML = renderPhotos();
-    let photoInfoHTML = renderPhotoInformation();
-
-    return [photoHTML, photoInfoHTML];
-  }
-
-  function fadeSlideOut() {
-    slides.className = 'hide';
-    removeInnerHTML(slides);
-  }
+SlideShow.prototype = {
+  registerTemplates() {
+    let photoTemplate = document.querySelector('#photos').innerHTML;
+    let photoInfoTemplate = document.querySelector('#photo_information').innerHTML;
+    let photoCommentsTemplate = document.querySelector('#photo_comments').innerHTML;
+    let photoCommentPartial = document.querySelector('#photo_comment').innerHTML;
   
-  function fadeSlideIn(photo) {
-    slides.className = '';
-    slides.className = 'show';
-    slides.insertAdjacentHTML("beforeEnd", photo);
-  }
+    this.photoTemplate = Handlebars.compile(photoTemplate);
+    this.photoInfoTemplate = Handlebars.compile(photoInfoTemplate);
+    this.photoCommentsTemplate = Handlebars.compile(photoCommentsTemplate);
+    photoCommentPartial = Handlebars.compile(photoCommentPartial);
 
-  function insertPhotoHTML(photo, photoInfo) {
-    fadeSlideOut();
-    fadeSlideIn(photo);    
-    removeInnerHTML(header);
-    header.insertAdjacentHTML("afterBegin", photoInfo);
-  }
+    Handlebars.registerPartial("photo_comment", photoCommentPartial);
+  },
 
-  function issueGetCommentRequest() {
-    let commentRequest = new XMLHttpRequest();
-    let path = `/comments?photo_id=${currentPhotoId}`;
-    commentRequest.responseType = 'json';
-    commentRequest.open('GET', path);
-    commentRequest.send();
-
-    commentRequest.addEventListener('load', event => {
-      let commentRequest = event.target;
-      let comments = commentRequest.response;
-      let commentHTML = templates.photo_comments({comments: comments});
-
-      removeInnerHTML(commentsList);
-      commentsList.insertAdjacentHTML('afterBegin', commentHTML);
-    });
-  }
-
-  request.addEventListener('load', event => {
-    let request = event.target;
-    photos = request.response;
-    ids = photos.map(photo => photo.id);
-    let firstPhotoId = Math.min(...ids);
-
-    currentPhotoId = firstPhotoId;
+  getPhotos() {
+    return new Promise((resolve, reject) => {
+        let photoRequest = new XMLHttpRequest();
+        photoRequest.open('GET', '/photos');
+        photoRequest.responseType = 'json';
     
-    let [photoHTML, photoInfoHTML] = renderPage();
-    insertPhotoHTML(photoHTML, photoInfoHTML);
-    issueGetCommentRequest();
-  });
+        photoRequest.addEventListener("load", e => {
+          e.preventDefault();
 
-  next.addEventListener('click', event => {
-    event.preventDefault();
-
-    reorderSlides("next");
-    currentPhotoId = ids[0];
-    
-    let [photoHTML, photoInfoHTML] = renderPage();    
-    insertPhotoHTML(photoHTML, photoInfoHTML);
-    
-    issueGetCommentRequest();
-  });
-
-  previous.addEventListener('click', event => {
-    event.preventDefault();
-
-    reorderSlides("prev");
-    currentPhotoId = ids[0];
-
-    let [photoHTML, photoInfoHTML] = renderPage();
-    insertPhotoHTML(photoHTML, photoInfoHTML);
-
-    issueGetCommentRequest();
-  });
-
-  header.addEventListener('click', event => {
-    event.preventDefault();
-    let data_property = event.target.dataset.property;
-    if (data_property === 'likes') {
-      let request = new XMLHttpRequest();
-      request.open('POST', '/photos/like');
-      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-      let id = event.target.dataset.id;
-      let json = JSON.stringify({photo_id: id});
-      request.send(json);
-  
-      request.addEventListener('load', e => {
-        let request = e.target;
-        let obj = JSON.parse(request.response);
-        let likes = document.querySelector('[data-property="likes"]');
-        let incrementedLikes = likes.textContent.replace(/\d/, obj.total);
-        likes.textContent = incrementedLikes;
-      });
-    } else if (data_property === 'favorites') {
-
-      let request = new XMLHttpRequest();
-      request.open('POST', 'photos/favorite');
-      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-      let id = event.target.dataset.id;
-      let json = JSON.stringify({photo_id: id});
-      request.send(json);
-
-      request.addEventListener('load', e => {
-
-        let request = e.target;
-        let obj = JSON.parse(request.response);
-        let favorites = document.querySelector('[data-property="favorites"]');
-        let incrementedFavorites = favorites.textContent.replace(/\d/, obj.total);
-        favorites.textContent = incrementedFavorites;
-      });
-    }
-  });
-
-  comments.addEventListener('click', event => {
-    event.preventDefault();
-    if (event.target.className === 'button') {
-      let formData = new FormData(form);
-      let request = new XMLHttpRequest();
-      request.open('POST', '/comments/new');
-      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      request.send(new URLSearchParams(formData));
-
-      request.addEventListener('load', function(e){
-        let request = e.target;
-        let response = JSON.parse(request.response);
-        let currentSlide = document.querySelector('#slides figure');
-        response.photo_id = Number(currentSlide.dataset.id);
+          if (e.target.status === 200) {
+            resolve(e.target.response);
+          } else {
+            reject('Bad Request');
+          }
+        });
         
-        let commentHTML = templates.photo_comment(response);
-        commentsList.insertAdjacentHTML("beforeEnd", commentHTML);
+        photoRequest.addEventListener("error", e => {
+          e.preventDefault();
+          reject('Something bad happened requesting photos...');
+        });
+    
+        photoRequest.send();
+    });
+  },
 
-        form.reset();
+  getComments(photoId) {
+    photoId = photoId || 1;
+
+    return new Promise((resolve, reject) => {
+      let commentRequest = new XMLHttpRequest();
+      commentRequest.open('GET', `/comments?photo_id=${photoId}`);
+      commentRequest.responseType = 'json';
+
+      commentRequest.addEventListener('load', e => {
+        if (e.target.status === 200) {
+          resolve(e.target.response);
+        } else {
+          reject('Bad comment request');
+        }
       });
+
+      commentRequest.addEventListener('error', e => {
+        reject('Something bad happened requesting comments...');
+      });
+
+      commentRequest.send();
+    });
+  },
+
+  renderPhotos(photoIdx = 0) {
+    let slides = document.querySelector('#slides');
+    while (slides.firstChild) {
+      slides.removeChild(slides.firstChild);
     }
-  });
+
+    let photoHTML = this.photoTemplate({photos: this.photos});  
+    slides.insertAdjacentHTML("afterbegin", photoHTML);
+    this.renderPhotoInfo(photoIdx, this.photos);
+  },
+
+  renderPhotoInfo(photoIdx) {
+    let photoInfo = document.querySelector('section > header');
+    while(photoInfo.firstChild) {
+      photoInfo.removeChild(photoInfo.firstChild);
+    }
+
+    let photoInfoHTML = this.photoInfoTemplate(this.photos[photoIdx]); 
+    photoInfo.insertAdjacentHTML("beforeend", photoInfoHTML);
+  },
+
+  renderComments() {
+    let commentsList = document.querySelector('#comments ul');
+    while(commentsList.firstChild) {
+      commentsList.removeChild(commentsList.firstChild);
+    }
+
+    let commentHTML = this.photoCommentsTemplate({comments: this.comments});
+    commentsList.insertAdjacentHTML("afterbegin", commentHTML);
+  },
+
+  fadeOut() {
+    let firstPhoto = document.querySelector('#slides figure');
+    firstPhoto.classList.remove('fade-in');
+    firstPhoto.classList.add('fade-out');
+  },
+
+  fadeIn() {
+    let firstPhoto = document.querySelector('#slides figure');
+    firstPhoto.classList.remove('fade-out');
+    firstPhoto.classList.add('fade-in');
+  },
+
+  handleNext(event) {
+    event.preventDefault();
+
+    let slides = document.querySelector('#slides');
+    let photoSlides = document.querySelectorAll('#slides figure');
+    let currentPhotoId = Number(photoSlides[0].dataset.id);
+    let currentNode = document.querySelector(`figure[data-id="${currentPhotoId}"]`);
+    let nextPhotoId = Number(photoSlides[1].dataset.id);
+    let nextCommentsInput = document.querySelector('input[name="photo_id"]');
+    nextCommentsInput.value = nextPhotoId;
+
+    this.fadeOut();    
+    setTimeout(() => {
+      slides.appendChild(currentNode);
+      this.fadeIn();
+    }, 2000);
+
+    (async function(that) {
+      try {
+        that.comments = await that.getComments(nextPhotoId);
+        that.photos = await that.getPhotos();
+        that.renderPhotoInfo(nextPhotoId - 1);
+        that.renderComments();
+        that.rebindActionButtons();
+      } catch(e) {
+        console.log(e);
+      }
+    })(this);
+  },
+
+  handlePrevious(event) {
+    event.preventDefault();
+
+    let slides = document.querySelector('#slides');
+    let photoSlides = document.querySelectorAll('#slides figure');
+    let currentPhotoId = Number(photoSlides[0].dataset.id);
+    let previousPhotoId;
+    let prevCommentsInput = document.querySelector('input[name="photo_id"]');
+    
+    if(currentPhotoId === 1) {
+      previousPhotoId = 3
+    } else {
+      previousPhotoId = currentPhotoId - 1;
+    }
+    
+    prevCommentsInput.value = previousPhotoId;
+    let currentNode = document.querySelector(`figure[data-id="${currentPhotoId}"]`);
+    let previousNode = document.querySelector(`figure[data-id="${previousPhotoId}"]`);
+
+    this.fadeOut();
+    setTimeout(() => {
+      slides.insertBefore(previousNode, currentNode)
+      this.fadeIn();
+    }, 2000);
+
+    (async function(that) {
+      try {
+      that.comments = await that.getComments(previousPhotoId);
+      that.photos = await that.getPhotos();
+      that.renderPhotoInfo(previousPhotoId - 1);
+      that.renderComments();
+      that.rebindActionButtons();
+      } catch (error) {
+        console.log(error);
+      }
+    })(this);
+  },
+
+  handleAction(event) {
+    event.preventDefault();
+    let button = event.target;
+    let buttonId = event.target.dataset.id;
+    
+    switch(button.dataset.property) {
+      case('likes'):
+        this.incrementLikes(button, buttonId);
+        break;
+      case('favorites'):
+        this.incrementFavorites(button, buttonId);
+        break;
+    }
+  },
+
+  incrementLikes(button, buttonId) {
+    fetch('/photos/like', {
+      method: 'POST',
+      responseType: 'json',
+      headers: {
+      "Content-Type": "application/json",
+        },
+        body: JSON.stringify({photo_id: buttonId}),
+    }).then(response => {
+      return response.json();
+    }).then( json => {
+      button.textContent = button.textContent.replace(/[\d]+/, json.total);
+    }).catch( e => {
+      console.log(e);
+    });
+  },
+
+  incrementFavorites(button, id) {
+    fetch('/photos/favorite', {
+      method: 'POST',
+      responseType: 'json',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({photo_id: id}),
+    }).then(response => {
+      return response.json();
+    }).then(json => {
+      button.textContent = button.textContent.replace(/[\d]+/, json.total);
+    }).catch(e => {
+      console.log(e);
+    })
+  },
+
+  postNewComment(event) {
+    event.preventDefault();
+    let form = event.target;
+    let encoded = new URLSearchParams(new FormData(form)).toString();
+    let photoId = document.querySelector('figure').dataset.id;
+
+    (async function() {
+      await fetch('/comments/new', {
+        method: "POST",
+        responseType: 'json', 
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: encoded,
+      }).then(response => {
+        return response.json();
+      }).then(json => {
+        return json;
+      });
+      this.comments = await this.getComments(photoId);
+      this.renderComments();
+      form.reset();
+    }.bind(this))();
+  },
+
+  bindEvents() {
+    let next = document.querySelector('a.next');
+    let previous = document.querySelector('a.prev');
+    let actions = document.querySelector('div.actions');
+    let form = document.querySelector('form');
+
+    next.addEventListener('click', this.handleNext.bind(this));
+    previous.addEventListener('click', this.handlePrevious.bind(this));
+    actions.addEventListener('click', this.handleAction.bind(this));
+    form.addEventListener('submit', this.postNewComment.bind(this));
+  },
+
+  rebindActionButtons() {
+    let actions = document.querySelector('div.actions');
+    actions.addEventListener('click', this.handleAction.bind(this));
+  }
+};
+
+document.addEventListener("DOMContentLoaded", e => {
+  new SlideShow();
 });
